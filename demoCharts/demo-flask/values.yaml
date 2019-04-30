@@ -12,7 +12,7 @@ DOCKER_REGISTRY_SECRET: regcred
 
 
 WAIT_QUEUE: demo_wait_q_0
-REDIS_HOST: d8b3a646-6c7f-4dfe-b448-cc2634d06d64.3c7f6c12a66c4324800651be37a77ceb.databases.appdomain.cloud
+REDIS_HOST: <UUID>.<ID>..databases.appdomain.cloud
 REDIS_PORT: 32305
 REDIS_DB: 0
 REDIS_SSL: True
@@ -28,8 +28,3 @@ limits:
 requests:
   memory: 1Gi
 
-
-#ingress
-DOMAIN: ibmcloud-meetup-dublin.eu-de.containers.appdomain.cloud
-TLS_SECRET: ibmcloud-meetup-dublin
-PATH: /

@@ -1,0 +1,14 @@
+# Copyright 2019 IBM Corporation All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#ingress
+DOMAIN: ibmcloud-meetup-dublin.eu-de.containers.appdomain.cloud
+TLS_SECRET: ibmcloud-meetup-dublin
+PATH: /
+
+#APP_ID
+BIND_SECRET: binding-meetup-demo-appid
+NAMESPACE: demo
+REQUEST_TYPE: web
+SERVICE: demo-flask
+SERVICE_PORT: 5000

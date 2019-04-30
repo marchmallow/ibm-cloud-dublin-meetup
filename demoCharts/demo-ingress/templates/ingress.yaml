@@ -1,0 +1,22 @@
+# Copyright 2019 IBM Corporation All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "demo-ingress.fullname" . }}
+  annotations:
+     ingress.bluemix.net/appid-auth: "bindSecret={{ .Values.BIND_SECRET }} namespace={{ .Values.NAMESPACE }} requestType={{ .Values.REQUEST_TYPE }} serviceName={{ .Values.SERVICE }}"
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.DOMAIN }}
+    secretName: {{ .Values.TLS_SECRET}}
+  rules:
+  - host: {{ .Values.DOMAIN }}
+    http:
+      paths:
+      - path: {{ .Values.PATH }}
+        backend:
+          serviceName: {{ .Values.SERVICE }}
+          servicePort: {{ .Values.SERVICE_PORT | default 5000 }}

@@ -112,15 +112,3 @@ push: env-DOCKER_REGISTRY_URL env-REGISTRY_TOKEN
 	@docker login -u token -p $(REGISTRY_TOKEN) $(DOCKER_REGISTRY_URL)
 	@docker push $(DOCKER_REGISTRY_URL)/$(NAMESPACE)/$(PROJECT):$(PROJECT_VERSION)
 
-deploy: ##Triggers deployment flow inside LE repo (triggers a build job against LE repo via Travis APIs)
-deploy: ENVIRONMENT=dev
-deploy:
-	@echo 'Trigger deployment phase after successful upload to docker registry'
-	@echo "./etc/scripts/deployment/triggerDeployment.sh $(ENVIRONMENT) global.$(SERVICE_TAG_KEY)=$(PROJECT_VERSION)"
-	@./etc/scripts/deployment/triggerDeployment.sh $(ENVIRONMENT) global.$(SERVICE_TAG_KEY)=$(PROJECT_VERSION)
-
-checkout-deps: ### Checkouts scripts required for proper ci cd flow.
-checkout-deps: env-GITHUB_TOKEN
-	@git clone --branch=master https://$(GITHUB_TOKEN)@github.ibm.com/fd4b-agrotech/deployment-tools.git deployment-tools
-	@cp -pr deployment-tools/* .
-	@rm -rf deployment-tools

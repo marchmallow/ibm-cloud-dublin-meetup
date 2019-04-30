@@ -1,0 +1,25 @@
+# Copyright 2019 IBM Corporation All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+language: bash
+dist: xenial
+services:
+- docker
+install:
+- make build
+script:
+- echo "Run tests here"
+deploy:
+#Pushes image to registry and deploys it to dev environment for testing.
+#We execute this only if this is tagged release
+- provider: script
+  script: make push
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\.[0-9]+.*$
+
+env:
+  global:
+#Docker registry token
+  - DOCKER_REGISTRY_URL="de.icr.io"

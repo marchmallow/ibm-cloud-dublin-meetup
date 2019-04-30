@@ -4,16 +4,16 @@
 kind: Deployment
 apiVersion: apps/v1beta1
 metadata:
-  name: {{ template "broker-demo.fullname" . }}
+  name: {{ template "demo-listener.fullname" . }}
   labels:
     app: {{ .Values.appName }}
-    chart: {{ template "broker-demo.fullname" . }}
+    chart: {{ template "demo-listener.fullname" . }}
 spec:
   replicas: {{ .Values.appReplicaCount }}
   selector:
     matchLabels:
       app: {{ .Values.appName }}
-      chart: {{ template "broker-demo.fullname" . }}
+      chart: {{ template "demo-listener.fullname" . }}
   strategy:
     rollingUpdate:
       maxSurge: {{ .Values.maxSurge  }}
@@ -23,7 +23,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.appName }}
-        chart: {{ template "broker-demo.fullname" . }}
+        chart: {{ template "demo-listener.fullname" . }}
     spec:
       imagePullSecrets:
       - name: {{ .Values.DOCKER_REGISTRY_SECRET }}
@@ -58,8 +58,8 @@ spec:
               key: PSQL_PASSWORD
 
 
-        - name: BROKER_TYPE
-          value: {{ .Values.BROKER_TYPE }}
+        - name: LISTENER_TYPE
+          value: {{ .Values.LISTENER_TYPE }}
         - name: REDIS_HOST
           value: {{ .Values.REDIS_HOST }}
         - name: REDIS_PORT

@@ -5,18 +5,18 @@
 apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
-  name: broker-demo
+  name: demo-listener
   namespace: demo
   annotations:
     flux.weave.works/automated: 'true'
 # This should only pick up images with X.Y.Z release tag and sort them properly as per version increases
     flux.weave.works/tag.chart-image: 'semver:*'
 spec:
-  releaseName: broker-demo
+  releaseName: demo-listener
   chart:
     git: git@github.ibm.com:fd4b-demo/demoKubernetes.git
     ref: master
-    path: broker-demo
+    path: demo-listener
   values:
     appReplicaCount: 1
     DOCKER_REGISTRY_SECRET: regcred
@@ -25,7 +25,7 @@ spec:
     REDIS_PORT: <PORT>
     REDIS_DB: 0
     REDIS_SSL: true
-    BROKER_TYPE: demo
+    LISTENER_TYPE: demo
     #psql
     PSQL_HOST: <UUID>.<ID>.databases.appdomain.cloud
     PSQL_PORT: <PORT>
@@ -33,7 +33,7 @@ spec:
     PSQL_USER: ibm_cloud_<ID>
 
     #image
-    image: de.icr.io/fd4b-demo/broker-demo
+    image: de.icr.io/fd4b-demo/demo-listener
     tag: 0.0.3
     #Resource
     limits:

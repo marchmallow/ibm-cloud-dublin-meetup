@@ -1,0 +1,20 @@
+# Copyright 2019 IBM Corporation All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "flaskform.fullname" . }}-ingress
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.DOMAIN }}
+    secretName: {{ .Values.TLS_SECRET}}
+  rules:
+  - host: {{ .Values.DOMAIN }}
+    http:
+      paths:
+      - path: {{ .Values.PATH }}
+        backend:
+          serviceName: {{template "flaskform.fullname" . }}
+          servicePort: {{ .Values.appPort | default 5000 }}

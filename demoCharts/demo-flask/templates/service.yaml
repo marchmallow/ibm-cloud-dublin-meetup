@@ -1,0 +1,76 @@
+# Copyright 2019 IBM Corporation All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{template "flaskform.fullname" . }}
+spec:
+  selector:
+    app: {{ .Values.appName }}
+    chart: {{template "flaskform.fullname" . }}
+  ports:
+  - name: http
+    port: {{ .Values.appPort | default 5000 }}
+    targetPort: {{ .Values.appPort | default 5000 }}
+  type: {{ .Values.serviceType }}
+---
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: {{ template "flaskform.fullname" . }}
+  labels:
+    app: {{ .Values.appName }}
+    chart: {{ template "flaskform.fullname" . }}
+spec:
+  replicas: {{ .Values.appReplicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+      chart: {{ template "flaskform.fullname" . }}
+  strategy:
+    rollingUpdate:
+      maxSurge: {{ .Values.maxSurge  }}
+      maxUnavailable: {{ .Values.maxUnavailable }}
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+        chart: {{ template "flaskform.fullname" . }}
+    spec:
+      imagePullSecrets:
+      - name: {{ .Values.DOCKER_REGISTRY_SECRET }}
+      containers:
+      - name: {{ .Values.appName }}
+        image: "{{ .Values.image }}:{{ .Values.tag }}"
+        resources:
+          limits:
+            memory: "{{ .Values.limits.memory }}"
+          requests:
+            memory: "{{ .Values.requests.memory }}"
+        securityContext:
+          privileged: true
+        ports:
+        - name: http-app
+          containerPort: {{ .Values.appPort | default 5000 }}
+        env:
+        - name: WAIT_QUEUE
+          value: {{ .Values.WAIT_QUEUE }}
+        - name: FLASK_APP
+          value: {{ .Values.FLASK_APP }}
+        - name: REDIS_HOST
+          value: {{ .Values.REDIS_HOST }}
+        - name: REDIS_PORT
+          value: {{ .Values.REDIS_PORT | quote }}
+        - name: REDIS_DB
+          value: {{ .Values.REDIS_DB | quote }}
+        - name: REDIS_SSL
+          value: {{ .Values.REDIS_SSL | quote }}
+        - name: REDIS_PASSWORD
+#          value: {{ .Values.REDIS_PASSWORD }}
+          valueFrom:
+            secretKeyRef:
+              name: redis-password
+              key: REDIS_PASSWORD
+        command: ["python", "{{ .Values.FLASK_APP }}"]

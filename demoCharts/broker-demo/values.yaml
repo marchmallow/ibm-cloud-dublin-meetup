@@ -1,0 +1,33 @@
+# Copyright 2019 IBM Corporation All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+appName: broker-demo
+serviceType: LoadBalancer
+appPort: 8080
+appReplicaCount: 1
+maxSurge: 0
+maxUnavailable: 1
+
+DOCKER_REGISTRY_SECRET: regcred
+REDIS_HOST: d8b3a646-6c7f-4dfe-b448-cc2634d06d64.3c7f6c12a66c4324800651be37a77ceb.databases.appdomain.cloud
+REDIS_PORT: 32305
+REDIS_DB: 0
+REDIS_SSL: True
+BROKER_TYPE: demo
+
+
+PSQL_HOST: 87a3108e-5cdd-4bb5-89a5-1bf6b32df4b9.bc28ac43cf10402584b5f01db462d330.databases.appdomain.cloud
+PSQL_PORT: 31414
+PSQL_DB: ibmclouddb
+PSQL_USER: ibm_cloud_7d69f812_27ec_4b9b_bd49_8687fccb0e73
+
+
+image: de.icr.io/fd4b-demo/broker-demo
+#image: demo-flask
+
+tag: 0.0.2
+
+limits:
+  memory: 1Gi
+requests:
+  memory: 1Gi

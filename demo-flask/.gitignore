@@ -1,0 +1,4 @@
+/.env
+/.project
+/dist/
+flaskform/__pycache__/

@@ -1,0 +1,40 @@
+---
+apiVersion: flux.weave.works/v1beta1
+kind: HelmRelease
+metadata:
+  name: demo-flask
+  namespace: demo
+  annotations:
+    flux.weave.works/automated: 'true'
+# This should only pick up images with X.Y.Z release tag and sort them properly as per version increases
+    flux.weave.works/tag.chart-image: 'semver:*'
+spec:
+  releaseName: demo-flask
+  chart:
+    git: git@github.ibm.com:fd4b-demo/demoKubernetes.git
+    ref: master
+    path: demo-flask
+  values:
+    serviceType: ClusterIP
+    appPort: 5000
+    appReplicaCount: 1
+    DOCKER_REGISTRY_SECRET: regcred
+    WAIT_QUEUE: demo_wait_q_0
+    #redis
+    REDIS_HOST: d8b3a646-6c7f-4dfe-b448-cc2634d06d64.3c7f6c12a66c4324800651be37a77ceb.databases.appdomain.cloud
+    REDIS_PORT: 32305
+    REDIS_DB: 0
+    REDIS_SSL: True
+    FLASK_APP: /opt/flaskform/__main__.py
+    #image
+    image: de.icr.io/fd4b-demo/demo-flask
+    tag: 0.1.19
+    #resources
+    limits:
+      memory: 1Gi
+    requests:
+      memory: 1Gi
+    #ingress
+    DOMAIN: ibmcloud-meetup-dublin.eu-de.containers.appdomain.cloud
+    TLS_SECRET: ibmcloud-meetup-dublin
+    PATH: /

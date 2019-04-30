@@ -1,0 +1,41 @@
+# Copyright 2019 IBM Corporation All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+
+language: bash
+dist: trusty
+services:
+- docker
+#Builds the docker image for the service
+before_install:
+- if [ ${TRAVIS_PULL_REQUEST} = "false" ]; then make checkout-deps; fi
+install:
+- make build
+#Run Test.
+script:
+- echo "script"
+#Pushes image to registry and deploys it to dev environment for testing.
+#We execute this only if this is tagged release
+deploy:
+#Execute block only on master
+- provider: script
+  script: make release-if-not-auto-push
+  skip_cleanup: true
+  on:
+    branch: master
+
+#Execute block on tagged release.
+- provider: script
+  script: make push
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: ${TRAVIS_TAG} =~ ^[0-9]+\.[0-9]+\.[0-9]+.*$
+
+env:
+  global:
+#Docker registry token
+  - DOCKER_REGISTRY_URL="de.icr.io"
+notifications:
+  slack:
+    secure: JusfWsz2oElfpXu1G4GlW003vFbYrP1aSMZrnOoWlkiyfHscUIYZkG56yl4+uJMP7SixX6+1V+fulZ/CjLPNzz6cTSWtozOOd0oGbvWm1yv5NkSxPbxWS/BTXMmvG6JLPb6ub7fP+HhiMicGKCRuCGYujCYlz8xGVYUL8YIavesb5sLWQLxdWf2Z6lo9gMBsp4L8f95tHgwXKQleiKGCpBZFW/Ac5Ja6yS+gwJD6636ZgqZXl1PZIvoDYpxL8ql1IoJLQzQgVEP+LUgXzof39Q4he5KSeCfiCJFYnUUtPhhKVyn19bJpWP8iEp2OMgk5Zbz9TEyCq0h6cc8ZJgwHnLzgAAb7DifJKbj3jHYwI3kWbvk/8HaiQ86dguuFsPpxa4VoQgsCbyMB+EWk/gs0aikuPGWh2PmnHs5Rm5wTyRDmYKAiRpU861ofdq8XvTE5GHVp2U8yc9crQrBrGYfYLMCef4Sx19ci6ttDcs57zg28/ocNu+eCBzVdpoz7vcBHJSpKxVT1RAiAEVNyrnrg9Q7YFUsvsj19hCQmoUBgw/42zvwZ/rX5r+jCqCsuUuiw7G/2U0E4vHpSRpFeJt6skmbfzdSYXG/rcOGc7tnDlrZUuC3xOvo521xtf8M1qCZ7YqouDDyJ1cFT5ohnJZUlQpikMh+Z46lAsFgqj+OfeWk=

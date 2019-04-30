@@ -111,9 +111,3 @@ push: env-DOCKER_REGISTRY_URL env-REGISTRY_TOKEN
 	@docker tag  $(PROJECT):$(PROJECT_VERSION) $(DOCKER_REGISTRY_URL)/$(NAMESPACE)/$(PROJECT):$(PROJECT_VERSION)
 	@docker login -u token -p $(REGISTRY_TOKEN) $(DOCKER_REGISTRY_URL)
 	@docker push $(DOCKER_REGISTRY_URL)/$(NAMESPACE)/$(PROJECT):$(PROJECT_VERSION)
-
-checkout-deps: ### Checkouts scripts required for proper ci cd flow.
-checkout-deps: env-GITHUB_TOKEN
-	@git clone --branch=master https://$(GITHUB_TOKEN)@github.ibm.com/fd4b-agrotech/deployment-tools.git deployment-tools
-	@cp -pr deployment-tools/* .
-	@rm -rf deployment-tools

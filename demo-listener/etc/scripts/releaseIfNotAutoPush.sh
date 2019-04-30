@@ -26,7 +26,7 @@ elif [[ "${TRAVIS_COMMIT_MESSAGE}" =~ $skip_release_regex ]]; then
 else
   echo "Merged PR. Making a new release."
   make release
-  echo "git remote set-url origin https://${GITHUB_TOKEN}@github.ibm.com/${TRAVIS_REPO_SLUG}.git"
-  git remote set-url origin https://${GITHUB_TOKEN}@github.ibm.com/${TRAVIS_REPO_SLUG}.git
+  echo "git remote set-url origin https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git"
+  git remote set-url origin https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git
   make release-push
 fi

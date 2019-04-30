@@ -13,10 +13,10 @@ metadata:
     flux.weave.works/tag.chart-image: 'semver:*'
 spec:
   releaseName: demo-listener
-  chart:
-    git: git@github.ibm.com:fd4b-demo/demoKubernetes.git
+  chart: 
+    git: git@github.com:marchmallow/ibm-cloud-dublin-meetup.git
     ref: master
-    path: demo-listener
+    path: demoCharts/demo-listener
   values:
     appReplicaCount: 1
     DOCKER_REGISTRY_SECRET: regcred

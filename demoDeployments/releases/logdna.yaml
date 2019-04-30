@@ -14,9 +14,9 @@ metadata:
 spec:
   releaseName: logdna
   chart:
-    git: git@github.ibm.com:fd4b-demo/demoKubernetes.git
+    git: git@github.com:marchmallow/ibm-cloud-dublin-meetup.git
     ref: master
-    path: logdna
+    path: demoCharts/logdna
   values:
     image: logdna/logdna-agent:1.5.6
     TAGS: best-meetup

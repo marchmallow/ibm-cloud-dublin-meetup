@@ -14,9 +14,9 @@ metadata:
 spec:
   releaseName: demo-flask
   chart:
-    git: git@github.ibm.com:fd4b-demo/demoKubernetes.git
+    git: git@github.com:marchmallow/ibm-cloud-dublin-meetup.git
     ref: master
-    path: demo-flask
+    path: demoCharts/demo-flask
   values:
     serviceType: ClusterIP
     appPort: 5000
